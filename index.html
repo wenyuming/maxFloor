@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>树形数据结构获取最深层数</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+   <div id='app'>
+       <textarea v-model="stringData" cols="100" rows="40">
+           
+       </textarea>
+       <button @click="getData()" style="padding: 10px;">
+            获取
+       </button>
+       <div style="text-align: center;">
+           最大层数：{{maxFloor}}
+       </div>
+   </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            stringData: JSON.stringify([
+                {
+                    "label": "广东省",
+                    "children": [
+                        {
+                            "label": "梅州市",
+                            "children": [
+                                {
+                                    "label": "兴宁市",
+                                    "children": [
+                                        {
+                                            "label": "黄槐镇",
+                                            "children": [
+                                                {
+                                                    "label": "西埔村",
+                                                    "children": [
+                                                        {
+                                                            "label": "中心街",
+                                                            "children": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "label": "宝龙村",
+                                                    "children": []
+                                                },
+                                                {
+                                                    "label": "双下村",
+                                                    "children": []
+                                                },
+                                                {
+                                                    "label": "双头村",
+                                                    "children": []
+                                                },
+                                                {
+                                                    "label": "槐东村",
+                                                    "children": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {"label": "一级2", "children": []},
+                {"label": "一级3", "children": []}
+            ]),
+            maxFloor: 0
+        },
+        methods: {
+            getData () {
+                let treeData = JSON.parse(this.stringData)
+                console.log(treeData, 'treeData')
+                this.getMaxFloor(treeData)
+            },
+            getMaxFloor (treeData) {
+                let floor = 0
+                let v = this
+                function each (data, floor) {
+                    data.forEach(e => {
+                        console.log(111111)
+                        e.floor = floor
+                        if (floor > v.maxFloor) {
+                            v.maxFloor = floor
+                        }
+                        if (e.children.length > 0) {
+                            each(e.children, floor + 1)
+                        }
+                    })
+                }
+                each(treeData,1)
+            }
+        },
+        mounted: function () {
+        },
+    })
+</script>
+</html>
