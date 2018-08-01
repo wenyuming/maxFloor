@@ -30,7 +30,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            stringData: JSON.stringify([
+            stringData: `[
                 {
                     "label": "广东省",
                     "children": [
@@ -78,24 +78,24 @@
                 },
                 {"label": "一级2", "children": []},
                 {"label": "一级3", "children": []}
-            ]),
+            ]`,
             maxFloor: 0
         },
         methods: {
             getData () {
                 let treeData = JSON.parse(this.stringData)
                 console.log(treeData, 'treeData')
-                this.getMaxFloor(treeData)
+                this.maxFloor = this.getMaxFloor(treeData)
             },
             getMaxFloor (treeData) {
                 let floor = 0
                 let v = this
+                let max = 0
                 function each (data, floor) {
                     data.forEach(e => {
-                        console.log(111111)
                         e.floor = floor
-                        if (floor > v.maxFloor) {
-                            v.maxFloor = floor
+                        if (floor > max) {
+                            max = floor
                         }
                         if (e.children.length > 0) {
                             each(e.children, floor + 1)
@@ -103,6 +103,7 @@
                     })
                 }
                 each(treeData,1)
+                return max
             }
         },
         mounted: function () {
